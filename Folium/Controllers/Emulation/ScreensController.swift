@@ -904,11 +904,17 @@ extension ScreensController {
             ])
         } else {
             constraints.phone.portrait.append(contentsOf: [
-                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 26.0),
-                primaryBackgroundRenderingView.left.constraint(equalTo: view.salg.left, constant: 26.0),
-                primaryBackgroundRenderingView.right.constraint(equalTo: view.salg.right, constant: -26.0),
+                primaryBackgroundRenderingView.top.constraint(equalTo: view.salg.top, constant: 9.0),
+                primaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+                primaryBackgroundRenderingView.width.constraint(equalTo: view.salg.width, multiplier: 0.86),
                 primaryBackgroundRenderingView.height.constraint(equalTo: primaryBackgroundRenderingView.salg.width,
-                                                                 multiplier: calculateAspectRatio(for: .tomato, isPortrait: true))
+                                                                 multiplier: calculateAspectRatio(for: .cytrus, isPortrait: true)),
+                
+                secondaryBackgroundRenderingView.top.constraint(equalTo: primaryBackgroundRenderingView.salg.bottom, constant: 20.0),
+                secondaryBackgroundRenderingView.centerX.constraint(equalTo: view.salg.centerX),
+                secondaryBackgroundRenderingView.width.constraint(equalTo: view.salg.width, multiplier: 0.688),
+                secondaryBackgroundRenderingView.height.constraint(equalTo: secondaryBackgroundRenderingView.salg.width,
+                                                                   multiplier: calculateAspectRatio(for: .cytrus, isPortrait: true, secondary: true)),
             ])
             
             constraints.phone.landscape.append(contentsOf: [
