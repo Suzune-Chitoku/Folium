@@ -13,6 +13,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Download AntiqueKit
+        run: |
+          cd ..
+          git clone https://github.com/jarrodnorwell/AntiqueKit.git || git clone https://github.com/folium-app-backup/AntiqueKit.git
+
       - name: Build Folium
         run: |
           xcodebuild clean build \
