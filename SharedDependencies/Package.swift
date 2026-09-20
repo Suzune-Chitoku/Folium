@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let endpoint: String = "https://github.com/folium-app/SharedDependencies/releases/download"
+let endpoint: String = "https://github.com/folium-app-backup/SharedDependencies/releases/download"
 let `extension`: String = "xcframework.zip"
 
 func url(for libraryName: String, with version: String = "2.0") -> String {
