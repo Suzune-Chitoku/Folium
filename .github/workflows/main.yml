@@ -18,9 +18,16 @@ jobs:
           cd ..
           git clone https://github.com/jarrodnorwell/AntiqueKit.git || git clone https://github.com/folium-app-backup/AntiqueKit.git
 
+      - name: Install Boost headers
+        run: |
+          brew install boost
+          sudo mkdir -p /usr/local/include
+          sudo ln -sfn "$(brew --prefix boost)/include/boost" /usr/local/include/boost
+
       - name: Build Folium
         run: |
           xcodebuild clean build \
+            -quiet \
             -project Folium.xcodeproj \
             -scheme Folium \
             -configuration Release \
