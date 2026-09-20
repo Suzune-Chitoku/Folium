@@ -563,6 +563,36 @@ extension CytrusController {
                 stackView.centerX.constraint(equalTo: view.salg.centerX)
             ])
         } else {
+                        // 縦向き: 上下の画面を「L/Rボタンの直前まで」の範囲に収める
+            if let primary = primaryBackgroundRenderingView,
+               let secondary = secondaryBackgroundRenderingView {
+                // configureConstraintsForCytrus() が作った縦向きの画面配置を破棄して、作り直す
+                constraints.phone.portrait.removeAll()
+                
+                let topRatio: CGFloat = calculateAspectRatio(for: .cytrus, isPortrait: true)
+                let bottomRatio: CGFloat = calculateAspectRatio(for: .cytrus, isPortrait: true, secondary: true)
+                
+                // 画面が横幅からはみ出さないための上限
+                let widthLimit = primary.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, constant: -52.0)
+                
+                // 下の画面の下端を、L/Rボタンの少し上にそろえる(優先度は少し低め)
+                let fitBottom = secondary.bottomAnchor.constraint(equalTo: l1Button.topAnchor, constant: -24.0)
+                fitBottom.priority = .defaultHigh
+                
+                constraints.phone.portrait.append(contentsOf: [
+                    primary.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 9.0),
+                    primary.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    primary.heightAnchor.constraint(equalTo: primary.widthAnchor, multiplier: topRatio),
+                    widthLimit,
+                    
+                    secondary.topAnchor.constraint(equalTo: primary.bottomAnchor, constant: 20.0),
+                    secondary.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    secondary.heightAnchor.constraint(equalTo: secondary.widthAnchor, multiplier: bottomRatio),
+                    // 上下の画面の高さが同じになるように、幅の比を決める
+                    secondary.widthAnchor.constraint(equalTo: primary.widthAnchor, multiplier: topRatio / bottomRatio),
+                    fitBottom
+                ])
+            }
             constraints.phone.portrait.append(contentsOf: [
                 southButton.bottom.constraint(equalTo: startButton.salg.top),
                 southButton.right.constraint(equalTo: eastButton.salg.left),
