@@ -24,6 +24,20 @@ jobs:
           sudo mkdir -p /usr/local/include
           sudo ln -sfn "$(brew --prefix boost)/include/boost" /usr/local/include/boost
 
+      - name: Install Vulkan SDK
+        env:
+          VULKAN_VERSION: "1.4.350.1"
+        run: |
+          curl -fL "https://sdk.lunarg.com/sdk/download/${VULKAN_VERSION}/mac/vulkansdk-macos-${VULKAN_VERSION}.zip" -o vulkan.zip
+          unzip -q vulkan.zip
+          APP=$(find . -maxdepth 1 -name "*.app" -print -quit)
+          BIN=$(ls "$APP/Contents/MacOS" | head -n 1)
+          sudo "$APP/Contents/MacOS/$BIN" \
+            --root "/Users/runner/VulkanSDK/${VULKAN_VERSION}" \
+            --accept-licenses --default-answer --confirm-command install \
+            com.lunarg.vulkan.core com.lunarg.vulkan.vma
+          ls "/Users/runner/VulkanSDK/${VULKAN_VERSION}/macOS/include"
+
       - name: Build Folium
         run: |
           xcodebuild clean build \
